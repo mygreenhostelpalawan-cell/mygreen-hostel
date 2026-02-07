@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Green Hostel – Challenges & Activities</title>
+  <style>
+    /*
+      Global layout: youthful, colourful and responsive. A calming
+      green background image is applied to the whole page. Each
+      content section sits on a semi‑transparent white panel to
+      ensure readability over the background.
+    */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: #073b22;
+      line-height: 1.5;
+      background-image: url('background.jpeg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+    header {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 1rem;
+      border-bottom: 2px solid #073b22;
+    }
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header img {
+      height: 60px;
+      margin-right: 1rem;
+    }
+    header h1 {
+      font-size: 2rem;
+      margin: 0;
+      color: #073b22;
+    }
+    nav {
+      margin-top: 1rem;
+    }
+    nav a {
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      color: #073b22;
+      font-weight: bold;
+      border: 1px solid #073b22;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+    nav a:hover {
+      background-color: #aeeac9;
+    }
+    nav a.active {
+      background-color: #073b22;
+      color: #ffffff;
+    }
+    section {
+      display: none;
+      padding: 2rem 1rem;
+      max-width: 1000px;
+      margin: 1rem auto;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+    }
+    section.active {
+      display: block;
+    }
+    h2 {
+      margin-top: 0;
+      color: #073b22;
+      font-size: 1.8rem;
+    }
+    /* Card styles for the challenges */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      width: 280px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card h3 {
+      margin-top: 0;
+      color: #073b22;
+      font-size: 1.3rem;
+    }
+    .card p {
+      margin: 0.5rem 0 1rem;
+      color: #374a37;
+      font-size: 0.95rem;
+    }
+    .card a {
+      background-color: #073b22;
+      color: #ffffff;
+      padding: 0.5rem 0.8rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: auto;
+    }
+    .card a:hover {
+      background-color: #0b5e34;
+    }
+    .reward-banner {
+      background-color: #fef3bd;
+      border: 2px dashed #f0c020;
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      border-radius: 12px;
+      color: #073b22;
+    }
+    .reward-banner h3 {
+      margin: 0;
+      font-size: 1.7rem;
+    }
+    .reward-banner p {
+      margin: 0.3rem 0 0;
+      font-size: 1rem;
+    }
+    .icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .schedule table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    .schedule th,
+    .schedule td {
+      padding: 0.5rem;
+      border-bottom: 1px solid #dddddd;
+      text-align: left;
+    }
+    .activities-list {
+      list-style: disc;
+      padding-left: 1.2rem;
+      margin: 0;
+    }
+    .activities-list li {
+      margin: 0.4rem 0;
+    }
+    .section-image {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+    .btn {
+      background-color: #073b22;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .btn:hover {
+      background-color: #0b5e34;
+    }
+    footer {
+      background-color: rgba(7, 59, 34, 0.9);
+      color: #ffffff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: #425e4a;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div style="display: flex; align-items: center;">
+        <img src="mygreen_logo_official.jpeg" alt="My Green Hostel logo" />
+        <h1>My Green Hostel</h1>
+      </div>
+      <nav>
+        <!-- The order of tabs has been updated as requested -->
+        <a href="#challenges" data-section="challenges" class="active">Challenge Game</a>
+        <a href="#activities" data-section="activities">Activities</a>
+        <a href="#island" data-section="island">Island Hopping</a>
+        <a href="#vans" data-section="vans">Vans</a>
+        <a href="#moto" data-section="moto">Motorbike</a>
+        <a href="#expedition" data-section="expedition">Expedition</a>
+      </nav>
+    </div>
+  </header>
+  <!-- Challenge Game Section -->
+  <section id="challenges" class="active">
+    <h2>Challenge Game</h2>
+    <div class="reward-banner">
+      <h3>Win a FREE Cocktail!</h3>
+      <p>Complete all five challenges and claim your drink*</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">📱</div>
+        <h3>Join our WhatsApp Group</h3>
+        <p>Stay updated with our free daily activities.</p>
+        <a href="https://chat.whatsapp.com/L1xLH6ouIkULX6lhj8cbfj?mode=gi_t" target="_blank">Join Group</a>
+      </div>
+      <div class="card">
+        <div class="icon">⏱️</div>
+        <h3>Beat the Timer</h3>
+        <p>Ask for our bar's timer challenge and stop it at exactly 1:00 on your first try to make your round free!</p>
+      </div>
+      <div class="card">
+        <div class="icon">📸</div>
+        <h3>Post a Funny Story</h3>
+        <p>Share a fun Instagram story and tag <strong>@mygreenhostel</strong>. Show it to our bartender to tick this box.</p>
+      </div>
+      <div class="card">
+        <div class="icon">❤️</div>
+        <h3>Follow Us on Instagram</h3>
+        <p>Support our hostel and restaurant by following us.</p>
+        <a href="https://www.instagram.com/mygreenhostel" target="_blank">Follow @mygreenhostel</a>
+        <br /><br />
+        <a href="https://www.instagram.com/kanallarestaurant" target="_blank">Follow @kanallarestaurant</a>
+      </div>
+      <div class="card">
+        <div class="icon">⭐</div>
+        <h3>Leave a Google Review</h3>
+        <p>Share your experience and help others discover us.</p>
+        <a href="https://g.page/r/CRsjcAo7z80tEBM/review" target="_blank">Review My Green Hostel</a>
+        <br /><br />
+        <a href="https://g.page/r/Cckm4IclCNVZEBM/review" target="_blank">Review Kanalla Restaurant</a>
+      </div>
+    </div>
+    <p class="note">*Only guests of legal drinking age may receive alcoholic beverages. Minors will receive a non‑alcoholic drink.</p>
+  </section>
+  <!-- Activities Section -->
+  <section id="activities">
+    <h2>Weekly Activities</h2>
+    <p>Every evening we serve <strong>free drinks</strong> from <strong>19:30</strong> and kick off our events at <strong>19:30</strong>! Choose your favourite night:</p>
+    <div class="schedule">
+      <table>
+        <thead>
+          <tr><th>Day</th><th>Evening Event (starts 19:30)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monday</td><td><a href="#karaoke" data-section="karaoke">Karaoke Night</a></td></tr>
+          <tr><td>Tuesday</td><td><a href="#spicy" data-section="spicy">Spicy Night</a></td></tr>
+          <tr><td>Wednesday</td><td><a href="#lechon" data-section="lechon">Lechon Party</a></td></tr>
+          <tr><td>Thursday</td><td><a href="#karaoke" data-section="karaoke">Karaoke Night</a></td></tr>
+          <tr><td>Friday</td><td><a href="#latin" data-section="latin">Latin Party</a></td></tr>
+          <tr><td>Saturday</td><td><a href="#karaoke" data-section="karaoke">Karaoke Night</a></td></tr>
+          <tr><td>Sunday</td><td><a href="#quiz" data-section="quiz">Quiz Night</a></td></tr>
+        </tbody>
+      </table>
+      <p><strong>Morning Yoga:</strong> ask at reception for schedule.</p>
+      <p><strong>Daily Activities:</strong></p>
+      <ul class="activities-list">
+        <li>Sunset Kayak</li>
+        <li>Island Hopping</li>
+        <li>Beach Volleyball</li>
+        <li>Waterfall Hikes</li>
+      </ul>
+    </div>
+  </section>
+  <!-- Activity Detail Sections -->
+  <section id="karaoke">
+    <h2>Karaoke Night</h2>
+    <img src="karaoke.jpeg" alt="Karaoke Night" class="section-image" />
+    <p>Sing your heart out at our Karaoke Nights! Grab the mic, belt out your favourite tunes and enjoy a fun atmosphere with other travellers. Starts at 19:30 with free drinks to get the night going.</p>
+  </section>
+  <section id="spicy">
+    <h2>Spicy Night</h2>
+    <img src="spicy night.png" alt="Spicy Night" class="section-image" />
+    <p>Spice up your Tuesday! Challenge your taste buds with fiery dishes and drinks, meet new friends and enjoy a fiery evening. Begins at 19:30 with our signature free shots.</p>
+  </section>
+  <section id="lechon">
+    <h2>Lechon Party</h2>
+    <img src="lechon party.jpeg" alt="Lechon Party" class="section-image" />
+    <p>Join us for a traditional Filipino lechon feast! Come hungry and savour the roasted pig with all the trimmings while meeting fellow travellers. Party kicks off at 19:30.</p>
+  </section>
+  <section id="latin">
+    <h2>Latin Party</h2>
+    <img src="latin party.jpeg" alt="Latin Party" class="section-image" />
+    <p>Feel the rhythm of the Latin beats! Our Friday Latin Party features salsa, bachata and lots of dancing. Enjoy cocktails and let loose from 19:30 onward.</p>
+  </section>
+  <section id="quiz">
+    <h2>Quiz Night</h2>
+    <img src="quiz night.jpeg" alt="Quiz Night" class="section-image" />
+    <p>Test your knowledge at our Quiz Night! Form a team or join others to answer fun questions covering pop culture, travel and more. Free drinks at 19:30; quiz starts shortly after.</p>
+  </section>
+  <!-- Island Hopping Section -->
+  <section id="island">
+    <h2>Island Hopping</h2>
+    <p>Explore the beautiful islands around Port Barton with our curated tours.</p>
+    <img src="island_hopping.jpeg" alt="Island hopping poster" class="section-image" />
+    <ul>
+      <li>Snorkel at Secret Reef, Caryl’s Garden and Aquarium #2.</li>
+      <li>Relax and enjoy lunch on scenic islands like Inaladelan or German Island.</li>
+      <li>Visit the famous Starfish Island and Turtle Spot.</li>
+      <li>Includes mask & snorkel, buffet lunch, Eco card and tourism tax (₱300 total).</li>
+    </ul>
+    <p><strong>Price:</strong> ₱1,500 per person.</p>
+    <a href="https://wa.me/639604160341" target="_blank" class="btn">Book via WhatsApp</a>
+  </section>
+  <!-- Vans Section -->
+  <section id="vans">
+    <h2>Van Transfers</h2>
+    <p>Need a ride to or from Port Barton? We arrange comfortable van transfers.</p>
+    <img src="van_schedule.jpeg" alt="Van schedule" class="section-image" />
+    <ul>
+      <li><strong>El Nido:</strong> 8 AM, 1 PM & 5 PM – ₱600 per person.</li>
+      <li><strong>Puerto Princesa:</strong> 6 AM, 8 AM, 10 AM, 1 PM, 3 PM & 5 PM – ₱550 per person.</li>
+    </ul>
+    <p>Other times available upon request. Let us know your travel plans and we'll arrange it for you.</p>
+    <a href="https://wa.me/639604160341" target="_blank" class="btn">Reserve via WhatsApp</a>
+  </section>
+  <!-- Motorbike Section -->
+  <section id="moto">
+    <h2>Motorbike & Scooter Rentals</h2>
+    <p>Explore Port Barton and its surroundings at your own pace.</p>
+    <img src="bike_rental.jpeg" alt="Motorbike rental poster" class="section-image" />
+    <ul>
+      <li><strong>Scooter:</strong> ₱550 per 24 hours.</li>
+      <li><strong>Sports bike:</strong> ₱1,200 per 24 hours.</li>
+    </ul>
+    <p>Helmets included. Please bring a valid driving licence.</p>
+    <a href="https://wa.me/639604160341" target="_blank" class="btn">Reserve via WhatsApp</a>
+  </section>
+  <!-- Expedition Section -->
+  <section id="expedition">
+    <h2>El Nido ⇄ Coron Expedition</h2>
+    <p>Embark on a once‑in‑a‑lifetime island‑hopping adventure between El Nido and Coron! Our three‑day, two‑night expedition explores some of the Philippines’ most stunning and remote islands.</p>
+    <img src="nes_expedition.jpeg" alt="NES Expedition poster" class="section-image" />
+    <h3>Itinerary Highlights</h3>
+    <ul>
+      <li><strong>Day 1:</strong> Start at San Fernando port, then visit Takling Island and Cobra Island to see turtles. Enjoy a bonfire at Linapacan campsite in the evening.</li>
+      <li><strong>Day 2:</strong> Swim and snorkel around Cagdanao Island and Cala Cala Island. Try cliff‑jumping at Inapupuan Island and experience village life at Cullion.</li>
+      <li><strong>Day 3:</strong> Explore Araw beach, Ditaytayan Island and its long sandbar before finishing at Coron port.</li>
+    </ul>
+    <p>This one‑way voyage includes meals, hut accommodation, snorkeling gear, hot and cold beverages, island entrance fees, eco taxes and activities like bonfires, line fishing, cliff jumping, karaoke, cards, sunset watching and beach volleyball【294701913227923†L52-L64】. Itineraries may change due to weather【294701913227923†L66-L71】.</p>
+    <a href="https://wa.me/639604160341" target="_blank" class="btn">Book via WhatsApp</a>
+  </section>
+  <footer>
+    <p>Contact us via WhatsApp: <a href="https://wa.me/639604160341" target="_blank">+63 960 416 0341</a></p>
+    <p>&copy; 2026 My Green Hostel</p>
+  </footer>
+  <script>
+    // Tab navigation logic: show the selected section and highlight the corresponding link
+    document.addEventListener('DOMContentLoaded', function() {
+      const navLinks = document.querySelectorAll('nav a');
+      const sections = document.querySelectorAll('section');
+      function showSection(id) {
+        sections.forEach(sec => {
+          if (sec.id === id) {
+            sec.classList.add('active');
+          } else {
+            sec.classList.remove('active');
+          }
+        });
+        navLinks.forEach(link => {
+          if (link.getAttribute('data-section') === id) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = this.getAttribute('data-section');
+          showSection(target);
+        });
+      });
+      // Links inside the schedule table also trigger navigation
+      const tableLinks = document.querySelectorAll('.schedule a');
+      tableLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = this.getAttribute('data-section');
+          showSection(target);
+        });
+      });
+      // Show challenges by default
+      showSection('challenges');
+    });
+  </script>
+</body>
+</html>
