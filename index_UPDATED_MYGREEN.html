@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Green Hostel – Guest Game & Info</title>
+
+  <style>
+    :root{
+      --green:#0a6b43;
+      --mint:#aeeac9;
+      --dark:#073b22;
+      --card: rgba(255,255,255,.92);
+      --shadow: 0 10px 30px rgba(0,0,0,.14);
+      --radius: 18px;
+    }
+
+    /* Background (per-tab feel: each tab sits on its own glass card over the same background) */
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--dark);
+      line-height:1.45;
+      background: #eaf7f0;
+      background-image: url("fondo%20de%20paginas.jpeg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+      background-attachment: fixed;
+    }
+
+    /* Header with full-width logo background */
+    header{
+      position: relative;
+      /* A bit taller so the full logo fits nicely on mobile */
+      min-height: 260px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:#fff;
+      background-image: url("WhatsApp%20Image%202026-02-07%20at%201.47.09%20PM.jpeg");
+      /* Show the whole logo (no cropping) */
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #0b3c2a;
+      /* Remove the thin line between header and content */
+      border-bottom: 0;
+    }
+    header::before{
+      content:"";
+      position:absolute; inset:0;
+      /* Softer overlay so the logo is clearly visible */
+      background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.20));
+    }
+    .header-inner{
+      position:relative;
+      z-index:1;
+      padding: 26px 16px 18px;
+      width:min(1100px, 100%);
+    }
+    .brand-title{
+      margin:0;
+      font-size: clamp(28px, 5vw, 46px);
+      letter-spacing: .5px;
+      font-weight: 900;
+      text-shadow: 0 8px 22px rgba(0,0,0,.35);
+    }
+    .brand-sub{
+      margin: 8px 0 0;
+      opacity:.95;
+      font-weight:600;
+      font-size: clamp(14px, 2.4vw, 16px);
+    }
+
+    /* Tabs */
+    .tabs{
+      margin-top: 16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:center;
+    }
+    .tab{
+      cursor:pointer;
+      border:0;
+      background: rgba(255,255,255,.92);
+      color: var(--dark);
+      font-weight: 800;
+      padding: 10px 14px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+      transition: transform .12s ease, background .2s ease;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .tab:hover{ transform: translateY(-1px); }
+    .tab.active{
+      background: #fefefe;
+      outline: 3px solid rgba(174,234,201,.75);
+    }
+
+    /* Layout */
+    .wrap{
+      width:min(1100px, 100%);
+      /* Remove the white gap under the header */
+      margin: 0 auto 70px;
+      padding: 0 14px;
+    }
+
+    .panel{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.55);
+    }
+
+    section{ display:none; }
+    section.active{ display:block; }
+
+    h2{
+      margin: 4px 0 10px;
+      font-size: clamp(20px, 3vw, 28px);
+      letter-spacing:.2px;
+    }
+    h3{
+      margin: 16px 0 8px;
+      font-size: 18px;
+    }
+    p{ margin: 8px 0; }
+
+    /* Badge / highlight */
+    .hero{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+    @media (max-width: 820px){
+      .hero{ grid-template-columns: 1fr; }
+    }
+    .reward{
+      background: linear-gradient(135deg, rgba(174,234,201,.75), rgba(255,255,255,.95));
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+      border: 1px solid rgba(10,107,67,.15);
+    }
+    .reward .big{
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 950;
+      margin: 4px 0 2px;
+    }
+    .reward .mini{
+      font-weight: 800;
+      opacity: .9;
+      margin: 0;
+    }
+    .cta-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    a.btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-decoration:none;
+      color: #fff;
+      background: var(--green);
+      font-weight: 900;
+      box-shadow: 0 10px 18px rgba(10,107,67,.22);
+    }
+    a.btn.secondary{
+      background: #0b3c2a;
+    }
+    .small{
+      font-size: 13px;
+      opacity: .9;
+    }
+
+    /* Cards grid */
+    .grid{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: repeat(5, 1fr);
+      margin-top: 12px;
+    }
+    @media (max-width: 1000px){
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+    .card{
+      background: rgba(255,255,255,.95);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+      min-height: 132px;
+    }
+    .card .title{
+      font-weight: 950;
+      margin:0 0 6px;
+      font-size: 15px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap:10px;
+    }
+    .pill{
+      display:inline-flex;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(174,234,201,.55);
+      font-weight: 900;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .card p{ margin: 6px 0; font-size: 13.5px; }
+    .card a{
+      color: var(--green);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    /* Tables */
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 14px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.07);
+    }
+    .table th, .table td{
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      vertical-align: top;
+      font-size: 14px;
+    }
+    .table th{
+      background: rgba(174,234,201,.55);
+      font-weight: 950;
+      text-align:left;
+    }
+    .table tr:last-child td{ border-bottom: none; }
+
+    /* Footer contact */
+    .footer{
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(0,0,0,.18);
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .footer a{
+      color: var(--green);
+      font-weight: 950;
+      text-decoration:none;
+    }
+    .note{
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <h1 class="brand-title">My Green Hostel</h1>
+      <p class="brand-sub">Guest Game • Weekly Activities • Tours • Transfers • Rentals • Expedition</p>
+
+      <div class="tabs" role="tablist" aria-label="My Green Hostel tabs">
+        <button class="tab active" data-target="challenge" role="tab">Challenge Game</button>
+        <button class="tab" data-target="activities" role="tab">Activities</button>
+        <button class="tab" data-target="island" role="tab">Island Hopping</button>
+        <button class="tab" data-target="vans" role="tab">Vans</button>
+        <button class="tab" data-target="motorbike" role="tab">Motorbike</button>
+        <button class="tab" data-target="expedition" role="tab">Expedition</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="panel">
+
+      <!-- CHALLENGE GAME -->
+      <section id="challenge" class="active">
+        <h2>My Green Hostel Bingo Challenge</h2>
+
+        <div class="hero">
+          <div class="reward">
+            <p class="mini">Complete the Bingo and win:</p>
+            <div class="big">🍹 FREE COCKTAIL</div>
+            <p class="small">Show the completed Bingo to our staff to claim your prize.</p>
+
+            <div class="cta-row">
+              <a class="btn" href="https://wa.me/639604160341" target="_blank" rel="noopener">WhatsApp us</a>
+              <a class="btn secondary" href="https://chat.whatsapp.com/L1xLH6ouIkULX6lhj8cbfj?mode=gi_t" target="_blank" rel="noopener">Join Activities Group</a>
+            </div>
+          </div>
+
+          <div class="note">
+            <strong>How it works:</strong>
+            <ul style="margin:8px 0 0; padding-left: 18px;">
+              <li>Do the challenges below during your stay.</li>
+              <li>Some challenges include links to make it easy.</li>
+              <li>We’ll verify the “story” and “timer” challenges in person.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="title">💬 Join the group chat <span class="pill">Easy</span></div>
+            <p>Join our WhatsApp activities group to stay updated with daily events.</p>
+            <p><a href="https://chat.whatsapp.com/L1xLH6ouIkULX6lhj8cbfj?mode=gi_t" target="_blank" rel="noopener">Join WhatsApp group →</a></p>
+          </div>
+
+          <div class="card">
+            <div class="title">⏱️ Beat the timer <span class="pill">Bar game</span></div>
+            <p>We have a stopwatch at the bar. You get <strong>one try</strong>.</p>
+            <p><strong>If you stop exactly at 1:00</strong>, the bill for what you ordered is <strong>FREE</strong>.</p>
+            <p class="small"><strong>For the Bingo square:</strong> you don’t need to hit 1:00 — just try the challenge.</p>
+          </div>
+
+          <div class="card">
+            <div class="title">📲 Post a funny story <span class="pill">Tag us</span></div>
+            <p>Post an Instagram story, make it fun, and tag us.</p>
+            <p class="small">@mygreenhostel &nbsp; + &nbsp; @kanallarestaurant</p>
+          </div>
+
+          <div class="card">
+            <div class="title">❤️ Follow us on IG <span class="pill">2 accounts</span></div>
+            <p><a href="https://www.instagram.com/mygreenhostel?igsh=MTljd2hwMnppbGM3dg==" target="_blank" rel="noopener">Follow @mygreenhostel →</a></p>
+            <p><a href="https://www.instagram.com/kanallarestaurant?igsh=MTh1cnZ5dnI1ZnBhbw==" target="_blank" rel="noopener">Follow @kanallarestaurant →</a></p>
+          </div>
+
+          <div class="card">
+            <div class="title">⭐ Leave Google reviews <span class="pill">2 places</span></div>
+            <p><a href="https://g.page/r/CRsjcAo7z80tEBM/review" target="_blank" rel="noopener">Review My Green Hostel →</a></p>
+            <p><a href="https://g.page/r/Cckm4IclCNVZEBM/review" target="_blank" rel="noopener">Review Kanalla Restaurant →</a></p>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="note">Need help? Ask reception or message us.</div>
+          <div>WhatsApp: <a href="https://wa.me/639604160341" target="_blank" rel="noopener">+63 960 416 0341</a></div>
+        </div>
+      </section>
+
+      <!-- ACTIVITIES -->
+      <section id="activities">
+        <h2>Weekly Activities</h2>
+
+        <p><strong>Starts at 19:30</strong> every night. <strong>Free drinks</strong> from <strong>19:30–20:00</strong> daily. 🍻</p>
+        <p><strong>Morning Yoga:</strong> ask at reception for schedule.</p>
+
+        <h3>Evening schedule (from 19:30)</h3>
+        <table class="table" aria-label="Evening schedule">
+          <thead>
+            <tr><th>Day</th><th>Event</th><th>Poster</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monday</td>
+              <td>🎤 Karaoke Night</td>
+              <td><a href="karaoke.jpeg" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>😈 Spicy Night (18+ only)</td>
+              <td><a href="spicy%20night.png" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+            <tr>
+              <td>Wednesday</td>
+              <td>🍽️ Lechon Party</td>
+              <td><a href="lechon%20party.jpeg" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>🎤 Karaoke Night</td>
+              <td><a href="karaoke.jpeg" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+            <tr>
+              <td>Friday</td>
+              <td>💃 Latin Party</td>
+              <td><a href="latin%20party.jpeg" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+            <tr>
+              <td>Saturday</td>
+              <td>🎤 Karaoke Night</td>
+              <td><a href="karaoke.jpeg" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+            <tr>
+              <td>Sunday</td>
+              <td>🧠 Quiz Night</td>
+              <td><a href="quiz%20night.jpeg" target="_blank" rel="noopener">View poster</a></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Day activities calendar</h3>
+        <table class="table" aria-label="Day activities calendar">
+          <thead>
+            <tr><th>Day</th><th>Time</th><th>Activity</th><th>Details</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Monday</td>
+              <td>10:00</td>
+              <td>💦 Waterfalls + Motorbike</td>
+              <td>Meet at reception for the plan + motorbike arrangement.</td>
+            </tr>
+            <tr>
+              <td>Tuesday</td>
+              <td>17:00</td>
+              <td>🏐 Beach Volleyball</td>
+              <td>Meet at My Green Hostel.</td>
+            </tr>
+            <tr>
+              <td>Wednesday</td>
+              <td>09:00</td>
+              <td>🏝️ Coconut Beach + White Beach</td>
+              <td>Boat: <strong>150 PHP per person</strong> (one-way trip). Ask reception for timing & group.</td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>16:00</td>
+              <td>🌅 Sunset Kayak (Starfish Island sandbar)</td>
+              <td>Meet at the hostel, kayak to Starfish Island for sunset, then return. <strong>Price = kayak rental</strong>.</td>
+            </tr>
+            <tr>
+              <td>Friday</td>
+              <td>17:00</td>
+              <td>🏐 Beach Volleyball</td>
+              <td>Meet at My Green Hostel.</td>
+            </tr>
+            <tr>
+              <td>Saturday</td>
+              <td>—</td>
+              <td>Chill day 😎</td>
+              <td>Ask reception for available tours / activities.</td>
+            </tr>
+            <tr>
+              <td>Sunday</td>
+              <td>09:00</td>
+              <td>🏝️ Coconut Beach + White Beach</td>
+              <td>Boat: <strong>150 PHP per person</strong> (one-way trip). Ask reception for timing & group.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="footer">
+          <div class="note">Questions or reservations: message us on WhatsApp.</div>
+          <div>WhatsApp: <a href="https://wa.me/639604160341" target="_blank" rel="noopener">+63 960 416 0341</a></div>
+        </div>
+      </section>
+
+      <!-- ISLAND HOPPING (no images per request) -->
+      <section id="island">
+        <h2>Island Hopping</h2>
+        <p style="text-align:center; max-width: 720px; margin: 0 auto;">
+          Explore the beautiful islands around Port Barton with our curated tours.
+        </p>
+
+        <div class="note" style="max-width: 760px; margin: 14px auto 0; text-align:left;">
+          <h3 style="margin:0 0 10px; text-align:center;">What’s included</h3>
+          <ul style="margin:0; padding-left:18px;">
+            <li>Snorkel at <strong>Secret Reef</strong>, <strong>Caryl’s Garden</strong> and <strong>Aquarium #2</strong>.</li>
+            <li>Relax and enjoy lunch on scenic islands like <strong>Inaladelan</strong> or <strong>German Island</strong>.</li>
+            <li>Visit the famous <strong>Starfish Island</strong> and <strong>Turtle Spot</strong>.</li>
+            <li>Includes <strong>mask &amp; snorkel</strong>, <strong>buffet lunch</strong>, <strong>Eco card</strong> and <strong>tourism tax</strong> (<strong>₱300</strong> total).</li>
+          </ul>
+          <p style="text-align:center; margin: 12px 0 0; font-weight: 900; font-size: 18px;">
+            Price: ₱1,500 per person
+          </p>
+        </div>
+
+        <div class="footer">
+          <div class="note">Book via WhatsApp</div>
+          <div><a href="https://wa.me/639604160341" target="_blank" rel="noopener">+63 960 416 0341</a></div>
+        </div>
+      </section>
+
+      <!-- VANS (no images per request) -->
+      <section id="vans">
+        <h2>Van Transfers</h2>
+        <p>We can arrange van transfers. Ask reception or WhatsApp us to reserve a seat.</p>
+        <table class="table" aria-label="Van schedule">
+          <thead>
+            <tr><th>Destination</th><th>Departure times</th><th>Price</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>El Nido</td>
+              <td>08:00 • 13:00 • 17:00</td>
+              <td>600 PHP</td>
+            </tr>
+            <tr>
+              <td>Puerto Princesa</td>
+              <td>06:00 • 08:00 • 10:00 • 13:00 • 15:00 • 17:00</td>
+              <td>550 PHP</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="footer">
+          <div class="note">Reserve via WhatsApp</div>
+          <div><a href="https://wa.me/639604160341" target="_blank" rel="noopener">+63 960 416 0341</a></div>
+        </div>
+      </section>
+
+      <!-- MOTORBIKE (no images per request) -->
+      <section id="motorbike">
+        <h2>Motorbike Rental</h2>
+        <table class="table" aria-label="Motorbike rental prices">
+          <thead>
+            <tr><th>Type</th><th>Duration</th><th>Price</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>🛵 Scooter</td><td>24 hours</td><td>550 PHP</td></tr>
+            <tr><td>🏍️ Sports bike</td><td>24 hours</td><td>1200 PHP</td></tr>
+          </tbody>
+        </table>
+
+        <div class="footer">
+          <div class="note">Reserve via WhatsApp</div>
+          <div><a href="https://wa.me/639604160341" target="_blank" rel="noopener">+63 960 416 0341</a></div>
+        </div>
+      </section>
+
+      <!-- EXPEDITION (no images per request) -->
+      <section id="expedition">
+        <h2>El Nido → Coron Expedition (NES Expedition)</h2>
+        <p><strong>Price:</strong> <strong>15,000 PHP</strong></p>
+        <p>We can arrange your booking through My Green Hostel (you book with us — no external contact needed).</p>
+
+        <h3>3 Days / 2 Nights – Highlights</h3>
+        <ul style="margin:8px 0 0; padding-left:18px;">
+          <li>Island hopping route with epic beaches and snorkeling spots</li>
+          <li>Camping nights (huts) + onboard meals</li>
+          <li>Bonfire, karaoke, beach volleyball, sunset watching, social vibes</li>
+        </ul>
+
+        <h3>Typical itinerary</h3>
+        <p class="small">(Exact stops may change depending on weather and sea conditions.)</p>
+
+        <table class="table" aria-label="Expedition itinerary">
+          <thead>
+            <tr><th>Day</th><th>Stops / Activities</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Day 1</td>
+              <td>Takling Island • Cobra Beach • Turtle watching • Linapacan campsite</td>
+            </tr>
+            <tr>
+              <td>Day 2</td>
+              <td>Cagdanao Island • Cala Cala Island • Asis Beach • Cliff jumping • Inapupuan Island • Culion campsite</td>
+            </tr>
+            <tr>
+              <td>Day 3</td>
+              <td>Araw Beach • Ditaytayan Island • Long Beach • Sandbar • Drop to Coron port/harbor</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Inclusions</h3>
+        <ul style="margin:8px 0 0; padding-left:18px;">
+          <li>Hotel pick-up (when applicable)</li>
+          <li>Onboard meals</li>
+          <li>Snorkeling mask</li>
+          <li>Hot & cold beverages</li>
+          <li>Island entrances + eco/tourism taxes (route dependent)</li>
+          <li>Accommodation (huts)</li>
+        </ul>
+
+        <div class="footer">
+          <div class="note">Book the expedition via WhatsApp</div>
+          <div><a href="https://wa.me/639604160341" target="_blank" rel="noopener">+63 960 416 0341</a></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const sections = Array.from(document.querySelectorAll('main section'));
+
+    function activate(id){
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.target === id));
+      sections.forEach(s => s.classList.toggle('active', s.id === id));
+      // keep URL tidy without forcing a reload
+      history.replaceState(null, "", "#" + id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.target)));
+
+    // Deep link support
+    const hash = (location.hash || "").replace("#","");
+    if(hash && document.getElementById(hash)){ activate(hash); }
+  </script>
+</body>
+</html>
